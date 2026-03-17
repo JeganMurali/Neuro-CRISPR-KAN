@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environment (never upload this - it's huge)
+venv/
+env/
+.venv/
+
+# Model weights & checkpoints (too large for GitHub)
+checkpoints/
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# Generated data
+data/generated/
+*.csv
+
+# Logs & plots
+logs/
+plots/
+*.log
+
+# HuggingFace cache (downloaded automatically)
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp

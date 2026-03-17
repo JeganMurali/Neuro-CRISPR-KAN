@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"venv\\\\Scripts\\\\python.exe\" run_training.py)",
+      "Bash(grep -n \"\\\\\\\\u\\\\|γ\\\\|✓\\\\|✅\\\\|⚡\\\\|⚠\\\\|🧬\\\\|║\\\\|╔\\\\|╠\\\\|╚\\\\|═\" training/train.py)",
+      "Bash(set PYTHONIOENCODING=utf-8)",
+      "Bash(\"venv\\\\Scripts\\\\python.exe\" -X utf8 run_training.py)",
+      "Bash(git reset:*)",
+      "Bash(git rm:*)",
+      "Bash(rm -f eroors)",
+      "Bash(shopt -s dotglob)",
+      "Bash(cp -r neuro_crispr_kan/* neuro_crispr_kan/.* .)",
+      "Bash(git add:*)"
+    ]
+  }
+}
