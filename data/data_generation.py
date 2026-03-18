@@ -144,8 +144,8 @@ def compute_off_target_label(
 
     # Clamp and binarize with noise
     base_risk = np.clip(base_risk, 0, 1)
-    noise = np.random.normal(0, 0.05)
-    return int((base_risk + noise) > 0.5)
+    noise = np.random.normal(0, 0.08)
+    return int((base_risk + noise) > 0.35)
 
 
 def compute_efficiency_score(

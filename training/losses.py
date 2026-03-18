@@ -40,7 +40,7 @@ class FocalLoss(nn.Module):
         alpha: Class weight for positive class (default 0.75)
     """
 
-    def __init__(self, gamma: float = 2.0, alpha: float = 0.75):
+    def __init__(self, gamma: float = 2.0, alpha: float = 0.65):
         super().__init__()
         self.gamma = gamma
         self.alpha = alpha
