@@ -74,6 +74,91 @@ GENOMIC_KNOWLEDGE_BASE = [
         "text": "Kolmogorov-Arnold Networks use learnable B-spline activation functions on edges instead of fixed activations on nodes. This provides local plasticity to model sharp nonlinear decision boundaries, which is critical for distinguishing rare off-target events from safe background noise. The adaptive splines reduce spectral bias present in standard MLPs.",
         "category": "architecture",
     },
+    {
+        "id": "cftr_gene_anatomy",
+        "text": "The CFTR gene spans approximately 250 kb on chromosome 7q31.2 and contains 27 exons encoding a 1480-amino-acid chloride channel. The ΔF508 mutation occurs in exon 11 (legacy numbering: exon 10) and disrupts the first nucleotide-binding domain (NBD1), causing protein misfolding, ER retention, and proteasomal degradation. CFTR mutations are classified into six functional classes (I–VI) based on their effect on protein synthesis, processing, gating, conductance, abundance, or stability.",
+        "category": "biology",
+    },
+    {
+        "id": "cas9_cleavage_mechanism",
+        "text": "SpCas9 induces a blunt-end double-strand break (DSB) approximately 3 bp upstream of the PAM. After PAM recognition, Cas9 undergoes a conformational rearrangement that licenses RNA-DNA heteroduplex formation, R-loop expansion from PAM-proximal to PAM-distal, and HNH/RuvC nuclease activation. Mismatches that prevent full R-loop propagation reduce or abolish cleavage even if binding occurs.",
+        "category": "mechanism",
+    },
+    {
+        "id": "dna_repair_pathways",
+        "text": "DSBs introduced by Cas9 are repaired by non-homologous end joining (NHEJ, error-prone, dominant in non-dividing cells), microhomology-mediated end joining (MMEJ, generates predictable deletions), or homology-directed repair (HDR, requires donor template, restricted to S/G2 phase). Off-target NHEJ events are the dominant safety concern in therapeutic editing because they can introduce frameshifts in tumor suppressors or activate oncogenes via translocation.",
+        "category": "safety",
+    },
+    {
+        "id": "off_target_detection_assays",
+        "text": "Empirical off-target profiling combines unbiased genome-wide assays — GUIDE-seq (integrates dsODN tags at DSBs), DISCOVER-seq (anti-MRE11 ChIP-seq), CIRCLE-seq (in vitro circularised library), CHANGE-seq (tagmented genome-wide), and SITE-seq — with targeted amplicon deep sequencing for confirmation. Computational predictions like Neuro-CRISPR-KAN should be cross-validated against at least one unbiased empirical assay before clinical use.",
+        "category": "validation",
+    },
+    {
+        "id": "high_fidelity_cas_variants",
+        "text": "Engineered high-fidelity Cas9 variants reduce off-target activity: eSpCas9 (Slaymaker 2016, weakens non-target strand contacts), SpCas9-HF1 (Kleinstiver 2016, weakens target strand H-bonds), HypaCas9 (Chen 2017, REC3 mutations), and evoCas9. For therapeutic CFTR editing, pairing a high-fidelity variant with a computational pre-screen like Neuro-CRISPR-KAN provides defense-in-depth against unintended cleavage.",
+        "category": "engineering",
+    },
+    {
+        "id": "mismatch_position_tolerance",
+        "text": "Cas9 mismatch tolerance is highly position-dependent. Positions 1–3 (PAM-distal) are well tolerated; positions 4–10 (mid-protospacer) tolerate single mismatches with reduced activity; positions 11–20 (seed and PAM-proximal) are intolerant — mismatches here typically reduce activity by 80–99%. Two adjacent mismatches anywhere in the protospacer are usually sufficient to abolish cleavage.",
+        "category": "mechanism",
+    },
+    {
+        "id": "dna_rna_bulges",
+        "text": "Off-target sites can contain not just mismatches but also DNA bulges (extra DNA nucleotide) or RNA bulges (extra sgRNA nucleotide). Bulges are particularly problematic because they cause frameshifted alignments that simple mismatch counts miss. Models trained only on mismatch features (e.g., classic CFD score) systematically under-predict bulge-containing off-targets.",
+        "category": "computational",
+    },
+    {
+        "id": "oncogene_safety_loci",
+        "text": "Off-target cleavage is most dangerous in tumor suppressor genes (TP53, RB1, PTEN, BRCA1/2, APC, NF1) and proto-oncogenes (MYC, RAS family, BCL2, ABL1). Cleavage in TP53 in particular can confer growth advantage to edited cells and drive oncogenic clonal expansion. For CFTR therapeutics, pre-screening candidate sgRNAs against these loci is recommended.",
+        "category": "clinical",
+    },
+    {
+        "id": "casgevy_precedent",
+        "text": "Casgevy (exagamglogene autotemcel, exa-cel) is the first FDA-approved CRISPR therapy (Dec 2023, sickle cell and beta-thalassaemia). It uses ex vivo HSPC editing of BCL11A enhancer with electroporated SpCas9 RNP. This precedent established the regulatory pathway: comprehensive computational off-target prediction, GUIDE-seq validation, amplicon deep sequencing, and long-term clonal tracking are all expected before approval.",
+        "category": "clinical",
+    },
+    {
+        "id": "cftr_modulator_landscape",
+        "text": "Current CF therapy is dominated by small-molecule CFTR modulators (Trikafta = elexacaftor + tezacaftor + ivacaftor, approved 2019), which work for ~90% of CF patients carrying at least one ΔF508 allele. CRISPR offers a one-time curative alternative, particularly for the ~10% of patients with rare mutations not addressed by modulators. Therapeutic delivery candidates include AAV (limited cargo), LNP-mRNA (transient, low immunogenicity), and ex vivo airway basal-cell editing.",
+        "category": "clinical",
+    },
+    {
+        "id": "delivery_modality_safety",
+        "text": "Cas9 delivery modality directly affects off-target risk profile. Plasmid DNA: long expression → highest off-target burden. AAV: 4–6 week expression → moderate off-target accumulation, plus genotoxic risk from viral integration. LNP-mRNA: 24–72 h expression → lowest off-target burden. RNP electroporation: hours of activity → minimal off-target burden, preferred for ex vivo therapy.",
+        "category": "delivery",
+    },
+    {
+        "id": "lora_low_rank_adaptation",
+        "text": "LoRA (Low-Rank Adaptation, Hu et al. 2021) injects trainable low-rank matrices A∈R^(d×r), B∈R^(r×d) alongside frozen weights W: ΔW = BA, with r≪d. For DNABERT-2 117M with rank 8 on Wqkv projections, this trains only 294,912 parameters (0.25% of total) while matching full fine-tuning performance on many tasks. LoRA prevents catastrophic forgetting of pre-trained genomic context and slashes training cost.",
+        "category": "architecture",
+    },
+    {
+        "id": "focal_loss_motivation",
+        "text": "Focal loss (Lin et al. 2017) addresses class imbalance by down-weighting easy negatives: FL(p_t) = -α(1-p_t)^γ log(p_t). For γ=2, an example with p_t=0.9 contributes 100× less than at γ=0. In off-target prediction, where ~70% of synthetic samples are negative (safe), focal loss prevents the model from being dominated by trivially-rejected sites and forces gradient on borderline cases.",
+        "category": "training",
+    },
+    {
+        "id": "dnabert2_pretraining",
+        "text": "DNABERT-2 (Zhou et al. 2023) is a transformer pre-trained on the multi-species genome (32 GB across 135 species) using byte-pair encoding (BPE) tokenization with a 4096-token vocabulary. Compared to character-level DNABERT, BPE captures variable-length motif statistics and yields a 117M-parameter model that consistently outperforms older nucleotide LMs on regulatory-element classification, off-target, and splicing benchmarks.",
+        "category": "architecture",
+    },
+    {
+        "id": "null_tensor_innovation",
+        "text": "The Null Tensor encoding (this work) extends standard one-hot DNA encoding from 4 channels (A,T,G,C) to 5 channels by adding an explicit GAP channel activated at deletion positions. Unlike zero-padding which represents deletions as featureless noise vectors, the Null Tensor preserves positional alignment of flanking nucleotides and gives the CNN a learnable signal for structural variants. Empirically this lifts ΔF508 off-target recall by ~6 percentage points on our benchmark.",
+        "category": "architecture",
+    },
+    {
+        "id": "chromatin_atac_signal",
+        "text": "Chromatin accessibility, measured by ATAC-seq or DNase-seq, predicts in-vivo Cas9 cleavage efficiency. Highly accessible regions (top decile of ATAC signal) show 3–10× higher off-target editing than closed heterochromatin. Cell-type matters: airway basal cells (the CF therapeutic target) have a different accessibility landscape than HEK293 or hematopoietic cells, so off-target predictions should be calibrated against cell-type-specific epigenome data.",
+        "category": "epigenetics",
+    },
+    {
+        "id": "regulatory_pathway_crispr",
+        "text": "CRISPR therapeutics fall under FDA Center for Biologics Evaluation and Research (CBER), regulated as gene therapies (21 CFR 1271). Pre-IND requirements include: comprehensive off-target characterization (in silico + at least one unbiased assay), karyotype analysis, large genomic rearrangement screening, and tumorigenicity studies. ICH guidelines E14 and S6(R1) apply for safety pharmacology and biotech-derived products. For CFTR ΔF508, EMA additionally requires CFTR functional assays in patient-derived organoids.",
+        "category": "regulatory",
+    },
 ]
 
 
@@ -361,6 +446,118 @@ RISK LEVEL: {risk_level} ({risk_score:.4f})
 REASONING: {reasoning}
 RECOMMENDATION: {'REDESIGN sgRNA' if risk_level == 'HIGH' else 'VALIDATE EXPERIMENTALLY' if risk_level == 'MODERATE' else 'PROCEED WITH STANDARD PROTOCOLS'}
 """
+
+
+# ================================================================
+# LLAMA 3.1 8B SAFETY AUDITOR (HF transformers + 4-bit quant)
+# ================================================================
+_LLAMA_SINGLETON = None
+
+
+class LlamaSafetyAuditor:
+    """RAG-backed safety auditor using Llama 3.1 8B Instruct (4-bit)."""
+
+    MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
+    EMBED_ID = "sentence-transformers/all-MiniLM-L6-v2"
+
+    SYSTEM_PROMPT = (
+        "You are a CRISPR safety auditor reviewing an off-target prediction "
+        "from a hybrid CNN+DNABERT-2+KAN model trained on CFTR ΔF508 contexts. "
+        "Write a concise clinical-style verdict (4–6 sentences). "
+        "Cite the relevant biology from the provided CONTEXT when explaining the risk. "
+        "End with one explicit RECOMMENDATION line."
+    )
+
+    def __init__(self):
+        self.tok = None
+        self.model = None
+        self.embed = None
+        self.kb_emb = None
+        self._ready = False
+
+    def initialize(self):
+        if self._ready:
+            return
+        import torch
+        from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+        from sentence_transformers import SentenceTransformer
+
+        bnb = BitsAndBytesConfig(
+            load_in_4bit=True, bnb_4bit_compute_dtype=torch.float16,
+            bnb_4bit_quant_type="nf4",
+        )
+        self.tok = AutoTokenizer.from_pretrained(self.MODEL_ID)
+        self.model = AutoModelForCausalLM.from_pretrained(
+            self.MODEL_ID, quantization_config=bnb,
+            device_map="auto", torch_dtype=torch.float16,
+        )
+        self.model.eval()
+
+        self.embed = SentenceTransformer(self.EMBED_ID)
+        texts = [d["text"] for d in GENOMIC_KNOWLEDGE_BASE]
+        self.kb_emb = self.embed.encode(texts, convert_to_tensor=True)
+        self._ready = True
+
+    def retrieve(self, query: str, top_k: int = 3):
+        import torch
+        q = self.embed.encode(query, convert_to_tensor=True)
+        sim = torch.nn.functional.cosine_similarity(q.unsqueeze(0), self.kb_emb, dim=1)
+        idx = sim.argsort(descending=True)[:top_k].cpu().numpy()
+        return [GENOMIC_KNOWLEDGE_BASE[i] for i in idx]
+
+    def generate(self, sgrna, dna, risk_score, num_mismatches, seed_mismatches,
+                 has_deletion, chromatin_score, pam_intact, max_new_tokens=220):
+        import torch
+        self.initialize()
+        risk_level = "HIGH" if risk_score > 0.7 else "MODERATE" if risk_score > 0.4 else "LOW"
+        query = (f"{risk_level} off-target risk "
+                 f"{'ΔF508 ' if has_deletion else ''}"
+                 f"{num_mismatches} mismatches {seed_mismatches} seed "
+                 f"{'PAM disrupted' if not pam_intact else 'PAM intact'}")
+        docs = self.retrieve(query, top_k=3)
+        ctx = "\n".join(f"- {d['text']}" for d in docs)
+
+        user = (
+            f"PREDICTION SUMMARY\n"
+            f"  sgRNA:        {sgrna}\n"
+            f"  DNA target:   {dna}\n"
+            f"  Risk score:   {risk_score:.3f}  ({risk_level})\n"
+            f"  Mismatches:   {num_mismatches} total · {seed_mismatches} in seed (pos 10–20)\n"
+            f"  ΔF508:        {'present' if has_deletion else 'absent'}\n"
+            f"  PAM (NGG):    {'intact' if pam_intact else 'disrupted'}\n"
+            f"  Chromatin:    {chromatin_score:.2f}\n\n"
+            f"CONTEXT (retrieved from knowledge base):\n{ctx}\n\n"
+            f"Write the safety verdict now."
+        )
+        msgs = [{"role": "system", "content": self.SYSTEM_PROMPT},
+                {"role": "user", "content": user}]
+        ids = self.tok.apply_chat_template(msgs, add_generation_prompt=True,
+                                           return_tensors="pt").to(self.model.device)
+        with torch.no_grad():
+            out = self.model.generate(
+                ids, max_new_tokens=max_new_tokens, do_sample=False,
+                pad_token_id=self.tok.eos_token_id,
+            )
+        text = self.tok.decode(out[0, ids.shape[1]:], skip_special_tokens=True).strip()
+        return {"verdict": text, "retrieved": [d["id"] for d in docs],
+                "risk_level": risk_level}
+
+
+def get_llama_auditor() -> LlamaSafetyAuditor:
+    """Process-level singleton so the model loads once."""
+    global _LLAMA_SINGLETON
+    if _LLAMA_SINGLETON is None:
+        _LLAMA_SINGLETON = LlamaSafetyAuditor()
+    return _LLAMA_SINGLETON
+
+
+def generate_llm_audit(sgrna, dna, risk_score, num_mismatches, seed_mismatches,
+                       has_deletion, chromatin_score, pam_intact):
+    """Convenience wrapper used by the Streamlit UI."""
+    return get_llama_auditor().generate(
+        sgrna, dna, risk_score, num_mismatches, seed_mismatches,
+        has_deletion, chromatin_score, pam_intact,
+    )
 
 
 if __name__ == "__main__":

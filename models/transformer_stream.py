@@ -68,12 +68,39 @@ class TransformerStream(nn.Module):
         model_config.use_flash_attn = False
         model_config._attn_implementation = "eager"
 
-        self.base_model = AutoModel.from_pretrained(
-            cfg.model_name,
-            config=model_config,
-            trust_remote_code=True,
-            attn_implementation="eager",  # Force standard attention
-        )
+        try:
+            self.base_model = AutoModel.from_pretrained(
+                cfg.model_name,
+                config=model_config,
+                trust_remote_code=True,
+            )
+        except ValueError as e:
+            # transformers 4.45+ trips on DNABERT-2's custom BertConfig vs HF BertConfig
+            # mismatch in AutoModel.register. Fall back to loading the cached BertModel
+            # class directly — bypasses the registration check.
+            if "config_class" in str(e):
+                from transformers import AutoModel as _AM
+                from transformers.dynamic_module_utils import get_class_from_dynamic_module
+                BertModelCls = get_class_from_dynamic_module(
+                    "bert_layers.BertModel", cfg.model_name,
+                )
+                self.base_model = BertModelCls.from_pretrained(
+                    cfg.model_name, config=model_config, trust_remote_code=True,
+                )
+            else:
+                raise
+
+        # DNABERT-2's bert_layers gates flash-attn purely on whether the
+        # triton import succeeded — it ignores config.use_flash_attn. Newer
+        # triton versions break the `tl.dot(..., trans_b=True)` call, so we
+        # force the PyTorch fallback by nulling the module-level symbol.
+        try:
+            import sys as _sys
+            for _name, _mod in list(_sys.modules.items()):
+                if _name.endswith(".bert_layers") and "DNABERT" in _name:
+                    _mod.flash_attn_qkvpacked_func = None
+        except Exception:
+            pass
 
         # ------------------------------------------------------------------
         # Apply LoRA adapter

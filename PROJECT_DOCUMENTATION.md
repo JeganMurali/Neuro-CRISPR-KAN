@@ -1,5 +1,36 @@
 # Neuro-CRISPR-KAN: Complete Technical Documentation
 
+> For a plain-language walkthrough with real data examples, see **PIPELINE_EXPLAINED.md**.
+
+## Implementation Status (last updated 2026-04-27)
+
+**Environment:** conda env `neuro_crispr`, Python 3.11, torch 2.6+cu124, transformers 4.29.2, peft 0.7.1, accelerate 0.27.2 on A100 40GB.
+
+**Working end-to-end:**
+- Dataset generation (10K samples, 26.4% positive, 40.4% with deletion) — `data/generated/crispr_dataset.csv`
+- Null Tensor encoding (5-channel) with verified GAP firing at positions 12-14 for deletion samples
+- Zero-Pad encoder (4-channel) for ablation
+- Full DataLoader pipeline (7K/1.5K/1.5K splits)
+- CNN stream (multi-kernel residual)
+- DNABERT-2 + LoRA transformer stream (294,912 trainable params, 0.25%)
+- Gated feature fusion
+- KAN decision core with B-spline activations
+- Compound loss (Focal + Spline-L1)
+- Adam + multi-group param LR
+- 5-epoch smoke train: focal loss drops 0.111 → 0.081, ~11s/epoch on A100, peak GPU 0.5 GB at batch 4
+
+**Patches required to make the codebase run on modern stacks:**
+1. Disabled DNABERT-2's bundled Triton flash-attention kernel (`bert_layers.py` cache) — the kernel uses removed Triton APIs (`tl.dot(..., trans_b=True)`).
+2. Removed `attn_implementation="eager"` kwarg from `models/transformer_stream.py:71` — not supported by transformers 4.29's custom BertModel.
+
+**Known limitations / not yet done:**
+- Full 50-epoch training run — not executed yet; smoke train AUROC=0.51 because 5 epochs is too few.
+- Per-epoch AUROC logging — recommended addition before full run.
+- Ablation study (Null Tensor vs Zero-Pad recall comparison) — not run.
+- Streamlit UI uses a mock prediction formula, not the trained model — needs wiring.
+- RAG module not yet exercised against trained outputs.
+- No experimental validation (paper itself notes this).
+
 ## Table of Contents
 
 1. [Project Overview](#1-project-overview)
